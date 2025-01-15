@@ -17,7 +17,7 @@ async def resume_upload(
     chunk_data: UploadFile = File(...)
 ):
     """
-    시연 시나리오:ㄴ
+    시연 시나리오:
     1) 클라이언트가 file_id, offset, total_size, chunk_data(바이너리)로 요청
     2) 서버는 현재까지 업로드된 offset과 비교하여 이어붙임
     3) 클라이언트가 연결이 끊긴 뒤, 다시 이어서 전송해도 중간부터 재개
@@ -25,7 +25,6 @@ async def resume_upload(
 
     # 이미 저장 중인 파일 정보를 딕셔너리에 저장해둔 적이 없다면 등록
     if file_id not in upload_progress:
-        # 임시로 "file_id.bin" 같은 식으로 최종 파일명을 정해둠
         filename = f"{file_id}.zip"
         upload_progress[file_id] = {
             "filename": filename,
@@ -58,7 +57,7 @@ async def resume_upload(
     # 만약 모든 바이트를 다 받았다면, 업로드 완료 처리
     if updated_offset == total_size:
         # 필요하다면 여기서 파일 무결성 체크(해시 등) 후 상태 업데이트
-        # 더이상 이 file_id에 대해 업로드 진행할 필요가 없으니, 딕셔너리에서 제거 가능
+        # 더이상 이 file_id에 대해 업로드 진행할 필요가 없으니, 딕셔너리에서 제거
         upload_progress.pop(file_id, None)
 
         return {
@@ -70,7 +69,7 @@ async def resume_upload(
     import math
     return {
         "status": "in-progress",
-        "message": f"Received {math.ceil(updated_offset / 20971520)} / {int(math.ceil(total_size / 20971520))}"
+        "message": f"Received {updated_offset} / {total_size}"
     }
 
 

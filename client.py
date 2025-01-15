@@ -5,12 +5,12 @@ import requests
 SERVER_URL = "http://localhost:8000" # FastAPI 서버 주소
 FILE_PATH = "test.zip" # 업로드할 파일 경로
 FILE_ID = "test" # 서버에서 구분할 file_id
-CHUNK_SIZE = 1024 * 1024 * 20 # 20MB 단위로 끊어 전송 (원하는대로 조절)
-TIMEOUT = 5 # 네트워크 타임아웃 (데모용)
+CHUNK_SIZE = 1024 * 1024 * 10 # 10MB 단위로 끊어 전송
+TIMEOUT = 5 # 네트워크 타임아웃
 
 
 def get_server_offset(file_id):
-    """ 서버에 현재까지 몇 바이트를 받았는지 물어보기 (디버그/시연용) """
+    """ 서버에 현재까지 몇 바이트를 받았는지 물어보기 """
     url = f"{SERVER_URL}/resume-status/{file_id}"
     resp = requests.get(url, timeout=TIMEOUT)
     data = resp.json()
